@@ -17,7 +17,5 @@ namespace DEME.BizTalk.Assistant.Models.Database.Context
         {
             base.OnConfiguring(optionsBuilder);
         }
-
-        public DbSet<Routing> Routing { get; set; }
     }
 }

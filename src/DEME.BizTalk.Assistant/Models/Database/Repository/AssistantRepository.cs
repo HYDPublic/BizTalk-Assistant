@@ -3,6 +3,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.Data.Entity;
 
 namespace DEME.BizTalk.Assistant.Models.Database.Repository
 {
@@ -20,30 +21,30 @@ namespace DEME.BizTalk.Assistant.Models.Database.Repository
         #region Business process
 
         /// <summary>
-        /// Gets a business process from the database based ona linq query
+        /// Gets a business process from the database based on a linq query
         /// </summary>
         /// <param name="p">Query on which to base the select</param>
         /// <returns></returns>
-        public BusinessProcess GetOne(Func<BusinessProcess, bool> p)
+        public BusinessProcess GetOneBusinessProcess(Func<BusinessProcess, bool> p)
         {
             try
             {
-                _logger.LogInformation($"Getting a business processes from database");
+                _logger.LogInformation($"Getting a business process from database");
                 return _context.BusinessProcessDbSet.Where(p).Single();
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Could not get business processes from database", ex);
+                _logger.LogError($"Could not get business process from database", ex);
                 return null;
             }
         }
 
         /// <summary>
-        /// Get all business processes from the database based on linq query
+        /// Get all business processes from the database based on a linq query
         /// </summary>
         /// <param name="p">Linq query to define where clause</param>
         /// <returns></returns>
-        public IEnumerable<BusinessProcess> GetAll(Func<BusinessProcess, bool> p)
+        public IEnumerable<BusinessProcess> GetAllBusinessProcess(Func<BusinessProcess, bool> p)
         {
             try
             {
@@ -113,7 +114,105 @@ namespace DEME.BizTalk.Assistant.Models.Database.Repository
                 _logger.LogError($"Could not remove business process ({businessProcess.Source} - {businessProcess.Process} - {businessProcess.Destination}) to database", ex);
             }
         }
+        #endregion
 
+        #region Routing
+
+        /// <summary>
+        /// Gets a routing from the database based on a linq query
+        /// </summary>
+        /// <param name="p">Query on which to base the select</param>
+        /// <returns></returns>
+        public Routing GetOneRouting(Func<Routing, bool> p)
+        {
+            try
+            {
+                _logger.LogInformation($"Getting a routing from database");
+                return _context.RoutingDbSet.Include(r => r.Source).Include(r => r.Destination).Where(p).Single();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Could not get routing from database", ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Get all routings from the database based on a linq query
+        /// </summary>
+        /// <param name="p">Linq query to define where clause</param>
+        /// <returns></returns>
+        public IEnumerable<Routing> GetAllRouting(Func<Routing, bool> p)
+        {
+            try
+            {
+                _logger.LogInformation($"Getting all routings from database");
+                return _context.RoutingDbSet.Include(r => r.Source).Include(r => r.Destination).Where(p).ToList();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError("Could not get routings from database", ex);
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Add a routing to the database
+        /// </summary>
+        /// <param name="businessProcess">The routing to add</param>
+        public void Add(Routing routing)
+        {
+            try
+            {
+                _logger.LogInformation($"Add a routing to the database");
+
+                _context.RoutingDbSet.Add(routing);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Could not add routing to database", ex);
+            }
+        }
+
+        /// <summary>
+        /// Update a routing from the database
+        /// </summary>
+        /// <param name="businessProcess">The routing to update</param>
+        public void Update(Routing routing)
+        {
+            try
+            {
+                _logger.LogInformation($"Update a routing to the database");
+
+                _context.RoutingDbSet.Update(routing);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Could not update routing to database", ex);
+            }
+        }
+
+
+        /// <summary>
+        /// Remove a routing from the database
+        /// </summary>
+        /// <param name="businessProcess">The routing to remove</param>
+        public void Remove(Routing routing)
+        {
+            try
+            {
+                _logger.LogInformation($"Remove a routing from the database");
+
+                _context.RoutingDbSet.Remove(routing);
+                _context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Could not remove routing from database", ex);
+            }
+        }
         #endregion
     }
 }

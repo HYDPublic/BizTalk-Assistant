@@ -4,22 +4,25 @@ using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Data.Entity;
 using DEME.BizTalk.Assistant.Models;
 using DEME.BizTalk.Assistant.Models.Database.Context;
+using AutoMapper;
+using DEME.BizTalk.Assistant.Models.Database.Repository;
+using System.Collections.Generic;
 
 namespace DEME.BizTalk.Assistant.Controllers.Web
 {
     public class RoutingController : Controller
     {
-        private AssistantContext _context;
+        private IAssistantRepository _repository;
 
-        public RoutingController(AssistantContext context)
+        public RoutingController(IAssistantRepository repository)
         {
-            _context = context;    
+            _repository = repository;
         }
 
         // GET: Routing
         public IActionResult Index()
         {
-            return View(_context.RoutingDbSet.ToList());
+            return View(Mapper.Map<IEnumerable<RoutingViewModel>>(_repository.GetAllRouting(r => true)));
         }
 
         // GET: Routing/Details/5
@@ -30,7 +33,7 @@ namespace DEME.BizTalk.Assistant.Controllers.Web
                 return HttpNotFound();
             }
 
-            Routing routing = _context.RoutingDbSet.Single(m => m.Id == id);
+            RoutingViewModel routing = Mapper.Map<RoutingViewModel>(_repository.GetOneRouting(m => m.Id == id));
             if (routing == null)
             {
                 return HttpNotFound();
@@ -52,8 +55,7 @@ namespace DEME.BizTalk.Assistant.Controllers.Web
         {
             if (ModelState.IsValid)
             {
-                _context.RoutingDbSet.Add(routing);
-                _context.SaveChanges();
+                _repository.Add(routing);
                 return RedirectToAction("Index");
             }
             return View(routing);
@@ -67,7 +69,7 @@ namespace DEME.BizTalk.Assistant.Controllers.Web
                 return HttpNotFound();
             }
 
-            Routing routing = _context.RoutingDbSet.Single(m => m.Id == id);
+            RoutingViewModel routing = Mapper.Map<RoutingViewModel>(_repository.GetOneRouting(m => m.Id == id));
             if (routing == null)
             {
                 return HttpNotFound();
@@ -82,8 +84,7 @@ namespace DEME.BizTalk.Assistant.Controllers.Web
         {
             if (ModelState.IsValid)
             {
-                _context.Update(routing);
-                _context.SaveChanges();
+                _repository.Update(routing);
                 return RedirectToAction("Index");
             }
             return View(routing);
@@ -98,7 +99,7 @@ namespace DEME.BizTalk.Assistant.Controllers.Web
                 return HttpNotFound();
             }
 
-            Routing routing = _context.RoutingDbSet.Single(m => m.Id == id);
+            RoutingViewModel routing = Mapper.Map<RoutingViewModel>(_repository.GetOneRouting(m => m.Id == id));
             if (routing == null)
             {
                 return HttpNotFound();
@@ -112,9 +113,8 @@ namespace DEME.BizTalk.Assistant.Controllers.Web
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            Routing routing = _context.RoutingDbSet.Single(m => m.Id == id);
-            _context.RoutingDbSet.Remove(routing);
-            _context.SaveChanges();
+            Routing routing = _repository.GetOneRouting(m => m.Id == id);
+            _repository.Remove(routing);
             return RedirectToAction("Index");
         }
     }

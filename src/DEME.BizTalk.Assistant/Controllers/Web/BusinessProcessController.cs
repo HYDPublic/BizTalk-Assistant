@@ -19,7 +19,7 @@ namespace DEME.BizTalk.Assistant.Controllers.Web
         public IActionResult Index()
         {
             //Linq query always true to return everything
-            return View(Mapper.Map<IEnumerable<BusinessProcessViewModel>>(_repository.GetAll(b => true)));
+            return View(Mapper.Map<IEnumerable<BusinessProcessViewModel>>(_repository.GetAllBusinessProcess(b => true)));
         }
 
         // GET: BusinessProcesses/Details/5
@@ -30,7 +30,7 @@ namespace DEME.BizTalk.Assistant.Controllers.Web
                 return HttpNotFound();
             }
 
-            BusinessProcessViewModel businessProcess = Mapper.Map<BusinessProcessViewModel>(_repository.GetOne(b => b.Id == id));
+            BusinessProcessViewModel businessProcess = Mapper.Map<BusinessProcessViewModel>(_repository.GetOneBusinessProcess(b => b.Id == id));
             if (businessProcess == null)
             {
                 return HttpNotFound();
@@ -66,7 +66,7 @@ namespace DEME.BizTalk.Assistant.Controllers.Web
                 return HttpNotFound();
             }
 
-            BusinessProcessViewModel businessProcess = Mapper.Map<BusinessProcessViewModel>(_repository.GetOne(b => b.Id == id));
+            BusinessProcessViewModel businessProcess = Mapper.Map<BusinessProcessViewModel>(_repository.GetOneBusinessProcess(b => b.Id == id));
             if (businessProcess == null)
             {
                 return HttpNotFound();
@@ -96,7 +96,7 @@ namespace DEME.BizTalk.Assistant.Controllers.Web
                 return HttpNotFound();
             }
 
-            BusinessProcessViewModel businessProcess = Mapper.Map<BusinessProcessViewModel>(_repository.GetOne(b => b.Id == id));
+            BusinessProcessViewModel businessProcess = Mapper.Map<BusinessProcessViewModel>(_repository.GetOneBusinessProcess(b => b.Id == id));
             if (businessProcess == null)
             {
                 return HttpNotFound();
@@ -110,7 +110,7 @@ namespace DEME.BizTalk.Assistant.Controllers.Web
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            BusinessProcess businessProcess = _repository.GetOne(b => b.Id == id);
+            BusinessProcess businessProcess = _repository.GetOneBusinessProcess(b => b.Id == id);
             _repository.Remove(businessProcess);
             return RedirectToAction("Index");
         }

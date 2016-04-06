@@ -47,12 +47,13 @@ namespace DEME.BizTalk.Assistant
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
 
+            services.AddTransient<AssistantContextSeedData>();
 
             services.AddScoped<IAssistantRepository, AssistantRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public async void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, AssistantContextSeedData seeder)
         {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
@@ -87,6 +88,7 @@ namespace DEME.BizTalk.Assistant
             Mapper.Initialize(config =>
             {
                 config.CreateMap<BusinessProcess, BusinessProcessViewModel>().ReverseMap();
+                config.CreateMap<Routing, RoutingViewModel>().ReverseMap();
             });
             // To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
 
@@ -95,7 +97,11 @@ namespace DEME.BizTalk.Assistant
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");
+
             });
+
+
+            await seeder.EnsureSeedDataAsync();
         }
 
         // Entry point for the application.

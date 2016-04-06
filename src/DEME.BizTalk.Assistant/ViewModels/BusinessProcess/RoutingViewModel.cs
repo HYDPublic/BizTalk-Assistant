@@ -1,6 +1,6 @@
 ﻿namespace DEME.BizTalk.Assistant.Models
 {
-    public class Routing
+    public class RoutingViewModel
     {
         public int Id { get; set; }
         public BusinessProcess Source { get; set; }
