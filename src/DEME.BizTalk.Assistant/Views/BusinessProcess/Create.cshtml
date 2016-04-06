@@ -1,0 +1,51 @@
+@model DEME.BizTalk.Assistant.Models.BusinessProcess
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>Business process</h4>
+        <hr />
+        <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Source" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Source" class="form-control" />
+                <span asp-validation-for="Source" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Process" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Process" class="form-control" />
+                <span asp-validation-for="Process" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Destination" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Destination" class="form-control" />
+                <span asp-validation-for="Destination" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
