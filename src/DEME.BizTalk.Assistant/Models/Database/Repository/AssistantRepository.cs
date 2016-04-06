@@ -28,12 +28,12 @@ namespace DEME.BizTalk.Assistant.Models.Database.Repository
         {
             try
             {
-                _logger.LogInformation($"Getting a business processes from database {p.ToString()}");
+                _logger.LogInformation($"Getting a business processes from database");
                 return _context.BusinessProcessDbSet.Where(p).Single();
             }
             catch (Exception ex)
             {
-                _logger.LogError($"Could not get business processes from database {p.ToString()}", ex);
+                _logger.LogError($"Could not get business processes from database", ex);
                 return null;
             }
         }
@@ -47,7 +47,7 @@ namespace DEME.BizTalk.Assistant.Models.Database.Repository
         {
             try
             {
-                _logger.LogInformation($"Getting all business processes from database {p.ToString()}");
+                _logger.LogInformation($"Getting all business processes from database");
                 return _context.BusinessProcessDbSet.Where(p).ToList();
             }
             catch (Exception ex)
