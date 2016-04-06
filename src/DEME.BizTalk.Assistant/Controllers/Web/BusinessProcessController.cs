@@ -1,25 +1,25 @@
-using System.Linq;
-using Microsoft.AspNet.Mvc;
-using Microsoft.AspNet.Mvc.Rendering;
-using Microsoft.Data.Entity;
+using AutoMapper;
 using DEME.BizTalk.Assistant.Models;
-using DEME.BizTalk.Assistant.Models.Database.Context;
+using DEME.BizTalk.Assistant.Models.Database.Repository;
+using Microsoft.AspNet.Mvc;
+using System.Collections.Generic;
 
-namespace DEME.BizTalk.Assistant.Controllers
+namespace DEME.BizTalk.Assistant.Controllers.Web
 {
     public class BusinessProcessController : Controller
     {
-        private AssistantContext _context;
+        private IAssistantRepository _repository;
 
-        public BusinessProcessController(AssistantContext context)
+        public BusinessProcessController(IAssistantRepository repository)
         {
-            _context = context;    
+            _repository = repository;
         }
 
         // GET: BusinessProcesses
         public IActionResult Index()
         {
-            return View(_context.BusinessProcessDbSet.ToList());
+            //Linq query always true to return everything
+            return View(Mapper.Map<IEnumerable<BusinessProcessViewModel>>(_repository.GetAll(b => true)));
         }
 
         // GET: BusinessProcesses/Details/5
@@ -30,7 +30,7 @@ namespace DEME.BizTalk.Assistant.Controllers
                 return HttpNotFound();
             }
 
-            BusinessProcess businessProcess = _context.BusinessProcessDbSet.Single(m => m.Id == id);
+            BusinessProcessViewModel businessProcess = Mapper.Map<BusinessProcessViewModel>(_repository.GetOne(b => b.Id == id));
             if (businessProcess == null)
             {
                 return HttpNotFound();
@@ -52,8 +52,7 @@ namespace DEME.BizTalk.Assistant.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.BusinessProcessDbSet.Add(businessProcess);
-                _context.SaveChanges();
+                _repository.Add(businessProcess);
                 return RedirectToAction("Index");
             }
             return View(businessProcess);
@@ -67,7 +66,7 @@ namespace DEME.BizTalk.Assistant.Controllers
                 return HttpNotFound();
             }
 
-            BusinessProcess businessProcess = _context.BusinessProcessDbSet.Single(m => m.Id == id);
+            BusinessProcessViewModel businessProcess = Mapper.Map<BusinessProcessViewModel>(_repository.GetOne(b => b.Id == id));
             if (businessProcess == null)
             {
                 return HttpNotFound();
@@ -82,8 +81,7 @@ namespace DEME.BizTalk.Assistant.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Update(businessProcess);
-                _context.SaveChanges();
+                _repository.Update(businessProcess);
                 return RedirectToAction("Index");
             }
             return View(businessProcess);
@@ -98,7 +96,7 @@ namespace DEME.BizTalk.Assistant.Controllers
                 return HttpNotFound();
             }
 
-            BusinessProcess businessProcess = _context.BusinessProcessDbSet.Single(m => m.Id == id);
+            BusinessProcessViewModel businessProcess = Mapper.Map<BusinessProcessViewModel>(_repository.GetOne(b => b.Id == id));
             if (businessProcess == null)
             {
                 return HttpNotFound();
@@ -112,9 +110,8 @@ namespace DEME.BizTalk.Assistant.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            BusinessProcess businessProcess = _context.BusinessProcessDbSet.Single(m => m.Id == id);
-            _context.BusinessProcessDbSet.Remove(businessProcess);
-            _context.SaveChanges();
+            BusinessProcess businessProcess = _repository.GetOne(b => b.Id == id);
+            _repository.Remove(businessProcess);
             return RedirectToAction("Index");
         }
     }

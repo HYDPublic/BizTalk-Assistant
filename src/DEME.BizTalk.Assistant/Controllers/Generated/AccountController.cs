@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 using DEME.BizTalk.Assistant.Models;
 using DEME.BizTalk.Assistant.Services;
 using DEME.BizTalk.Assistant.ViewModels.Account;
+using DEME.BizTalk.Assistant.Controllers.Web;
 
 namespace DEME.BizTalk.Assistant.Controllers.Generated
 {

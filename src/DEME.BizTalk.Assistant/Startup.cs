@@ -1,5 +1,7 @@
-﻿using DEME.BizTalk.Assistant.Models;
+﻿using AutoMapper;
+using DEME.BizTalk.Assistant.Models;
 using DEME.BizTalk.Assistant.Models.Database.Context;
+using DEME.BizTalk.Assistant.Models.Database.Repository;
 using DEME.BizTalk.Assistant.Services;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
@@ -44,6 +46,9 @@ namespace DEME.BizTalk.Assistant
             // Add application services.
             services.AddTransient<IEmailSender, AuthMessageSender>();
             services.AddTransient<ISmsSender, AuthMessageSender>();
+
+
+            services.AddScoped<IAssistantRepository, AssistantRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -79,6 +84,10 @@ namespace DEME.BizTalk.Assistant
 
             app.UseStaticFiles();
 
+            Mapper.Initialize(config =>
+            {
+                config.CreateMap<BusinessProcess, BusinessProcessViewModel>().ReverseMap();
+            });
             // To configure external authentication please see http://go.microsoft.com/fwlink/?LinkID=532715
 
             app.UseMvc(routes =>

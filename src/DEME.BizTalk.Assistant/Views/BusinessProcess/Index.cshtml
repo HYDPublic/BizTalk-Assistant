@@ -1,10 +1,10 @@
-@model IEnumerable<DEME.BizTalk.Assistant.Models.BusinessProcess>
+@model IEnumerable<BusinessProcessViewModel>
 
 @{
-    ViewData["Title"] = "Business Processes";
+    ViewData["Title"] = "Business processes";
 }
 
-<h2>Index</h2>
+<h2>@ViewData["Title"]</h2>
 
 <p>
     <a asp-action="Create">Create New</a>

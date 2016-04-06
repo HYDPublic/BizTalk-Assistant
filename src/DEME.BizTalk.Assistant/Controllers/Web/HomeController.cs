@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Mvc;
 
-namespace DEME.BizTalk.Assistant.Controllers
+namespace DEME.BizTalk.Assistant.Controllers.Web
 {
     public class HomeController : Controller
     {

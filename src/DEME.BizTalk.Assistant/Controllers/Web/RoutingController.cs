@@ -5,7 +5,7 @@ using Microsoft.Data.Entity;
 using DEME.BizTalk.Assistant.Models;
 using DEME.BizTalk.Assistant.Models.Database.Context;
 
-namespace DEME.BizTalk.Assistant.Controllers
+namespace DEME.BizTalk.Assistant.Controllers.Web
 {
     public class RoutingController : Controller
     {
