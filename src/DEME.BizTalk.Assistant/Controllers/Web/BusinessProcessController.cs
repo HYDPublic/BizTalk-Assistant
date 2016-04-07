@@ -19,7 +19,7 @@ namespace DEME.BizTalk.Assistant.Controllers.Web
         public IActionResult Index()
         {
             //Linq query always true to return everything
-            return View(Mapper.Map<IEnumerable<BusinessProcessViewModel>>(_repository.GetAllBusinessProcess(b => true)));
+            return View(Mapper.Map<IEnumerable<BusinessProcessViewModel>>(_repository.GetAllBusinessProcesses(b => true)));
         }
 
         // GET: BusinessProcesses/Details/5
@@ -48,11 +48,11 @@ namespace DEME.BizTalk.Assistant.Controllers.Web
         // POST: BusinessProcesses/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(BusinessProcess businessProcess)
+        public IActionResult Create(BusinessProcessViewModel businessProcess)
         {
             if (ModelState.IsValid)
             {
-                _repository.Add(businessProcess);
+                _repository.Add(Mapper.Map<BusinessProcess>(businessProcess));
                 return RedirectToAction("Index");
             }
             return View(businessProcess);
@@ -77,11 +77,11 @@ namespace DEME.BizTalk.Assistant.Controllers.Web
         // POST: BusinessProcesses/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(BusinessProcess businessProcess)
+        public IActionResult Edit(BusinessProcessViewModel businessProcess)
         {
             if (ModelState.IsValid)
             {
-                _repository.Update(businessProcess);
+                _repository.Update(Mapper.Map<BusinessProcess>(businessProcess));
                 return RedirectToAction("Index");
             }
             return View(businessProcess);

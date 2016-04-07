@@ -19,7 +19,7 @@ namespace DEME.BizTalk.Assistant.Models.Database.Repository
         /// </summary>
         /// <param name="p">Linq query to define where clause</param>
         /// <returns></returns>
-        IEnumerable<BusinessProcess> GetAllBusinessProcess(Func<BusinessProcess, bool> p);
+        IEnumerable<BusinessProcess> GetAllBusinessProcesses(Func<BusinessProcess, bool> p);
 
         /// <summary>
         /// Add a business process to the database

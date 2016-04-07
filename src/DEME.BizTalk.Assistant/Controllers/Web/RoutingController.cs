@@ -45,17 +45,22 @@ namespace DEME.BizTalk.Assistant.Controllers.Web
         // GET: Routing/Create
         public IActionResult Create()
         {
+            ViewBag.BusinessProcessSelection = new SelectList(_repository.GetAllBusinessProcesses(bp => true).Select(b => new SelectListItem
+            {
+                Value = b.Id.ToString(),
+                Text = b.ToString()
+            }), "Value", "Text");
             return View();
         }
 
         // POST: Routing/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Routing routing)
+        public IActionResult Create(RoutingViewModel routing)
         {
             if (ModelState.IsValid)
             {
-                _repository.Add(routing);
+                _repository.Add(Mapper.Map<Routing>(routing));
                 return RedirectToAction("Index");
             }
             return View(routing);
@@ -74,17 +79,27 @@ namespace DEME.BizTalk.Assistant.Controllers.Web
             {
                 return HttpNotFound();
             }
+
+            ViewBag.BusinessProcessSelection = new SelectList(_repository.GetAllBusinessProcesses(bp => true).Select(b => new SelectListItem
+            {
+                Value = b.Id.ToString(),
+                Text = b.ToString()
+            }), "Value", "Text");
+
             return View(routing);
         }
 
         // POST: Routing/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(Routing routing)
+        public IActionResult Edit(RoutingViewModel routing)
         {
+            //Only Id is set via the page, so get the value alongside the id
+            routing.Source = _repository.GetOneBusinessProcess(p => p.Id == routing.Source.Id);
+            routing.Destination = _repository.GetOneBusinessProcess(p => p.Id == routing.Destination.Id);
             if (ModelState.IsValid)
             {
-                _repository.Update(routing);
+                _repository.Update(Mapper.Map<Routing>(routing));
                 return RedirectToAction("Index");
             }
             return View(routing);

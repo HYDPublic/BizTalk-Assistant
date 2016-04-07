@@ -11,5 +11,10 @@ namespace DEME.BizTalk.Assistant.Models
         public string Source { get; set; }
         public string Process { get; set; }
         public string Destination { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Source} - {Process} - {Destination}";
+        }
     }
 }
