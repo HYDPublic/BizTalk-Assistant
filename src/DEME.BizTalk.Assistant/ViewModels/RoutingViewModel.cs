@@ -9,6 +9,7 @@ namespace DEME.BizTalk.Assistant.Models
         public BusinessProcess Source { get; set; }
 
         [Required]
+        [Display(Name = "Type of change")]
         public string ChangeType { get; set; }
 
         [Required]

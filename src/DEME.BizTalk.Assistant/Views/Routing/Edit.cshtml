@@ -14,8 +14,10 @@
         <input type="hidden" asp-for="Id" />
         <div class="form-group">
             <label asp-for="Source" class="col-md-2 control-label"></label>
-            @Html.DropDownListFor(m => m.Source.Id, (SelectList)ViewBag.BusinessProcessSelection, Model.Source.Id)
-            <span asp-validation-for="Source" class="text-danger" />
+            <div class="col-md-10">
+                <select asp-for="Source.Id" asp-items="ViewBag.BusinessProcessSelection" class="form-control"></select>
+                <span asp-validation-for="Source" class="text-danger" />
+            </div>
         </div>
         <div class="form-group">
             <label asp-for="ChangeType" class="col-md-2 control-label"></label>
@@ -26,18 +28,20 @@
         </div>
         <div class="form-group">
             <label asp-for="Destination" class="col-md-2 control-label"></label>
-            @Html.DropDownListFor(m => m.Destination.Id, (SelectList)ViewBag.BusinessProcessSelection, Model.Destination.Id)
-            <span asp-validation-for="Destination" class="text-danger" />
+            <div class="col-md-10">
+                <select asp-for="Destination.Id" asp-items="ViewBag.BusinessProcessSelection"  class="form-control"></select>
+                <span asp-validation-for="Destination" class="text-danger" />
+            </div>
         </div>
         <div class="form-group">
             <label asp-for="Active" class="col-md-2 control-label"></label>
-            <div class="col-md-offset-2 ">
+            <div class="col-md-10">
                 <input asp-for="Active" />
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-success" />
             </div>
         </div>
     </div>
