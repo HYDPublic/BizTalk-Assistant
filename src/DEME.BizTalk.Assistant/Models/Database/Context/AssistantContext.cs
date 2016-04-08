@@ -3,6 +3,9 @@ using DEME.BizTalk.Assistant.Models;
 
 namespace DEME.BizTalk.Assistant.Models.Database.Context
 {
+    //TODO SQL injection check
+    //TODO cross site scripting check
+    //TODO cross site request forgery check
     public class AssistantContext : DbContext
     {
         public AssistantContext()
@@ -17,7 +20,5 @@ namespace DEME.BizTalk.Assistant.Models.Database.Context
         {
             base.OnConfiguring(optionsBuilder);
         }
-
-        public DbSet<RoutingViewModel> RoutingViewModel { get; set; }
     }
 }
